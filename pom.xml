@@ -950,6 +950,16 @@
       </snapshots>
     </repository>
 
+    <repository>
+      <id>p2.jfrog.org</id>
+      <url>http://p2.jfrog.org/libs-releases</url>
+    </repository>
+
+    <repository>
+      <id>nexus.axiomalaska.com</id>
+      <url>http://nexus.axiomalaska.com/nexus/content/repositories/public</url>
+    </repository>
+
   </repositories>
 
   <pluginRepositories>
@@ -1008,6 +1018,7 @@
               <exclude>**/ForkedAlphaNumericComparator.java</exclude>
               <exclude>PATCH.txt</exclude>
               <exclude>*settings.xml</exclude>
+              <exclude>*.sh</exclude>
               <!-- MIT -->
             </excludes>
           </configuration>
