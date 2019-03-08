@@ -62,7 +62,6 @@
       <excludes>
         <exclude>com.ngdata:hbase-indexer-all</exclude>
         <exclude>com.ngdata:hbase-indexer-dist</exclude>
-        <exclude>com.ngdata:hbase-indexer-mr:jar:job</exclude>
         <exclude>*:*:pom</exclude>
       </excludes>
       <fileMode>0644</fileMode>
@@ -72,9 +71,6 @@
       <outputDirectory>/tools</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
-      <includes>
-        <include>com.ngdata:hbase-indexer-mr:jar:job</include>
-      </includes>
       <fileMode>0644</fileMode>
       <directoryMode>0644</directoryMode>
     </dependencySet>
