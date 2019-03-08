@@ -26,9 +26,7 @@ import com.ngdata.hbaseindexer.model.api.IndexerDefinitionBuilder;
 import com.ngdata.hbaseindexer.model.api.IndexerLifecycleListener;
 import com.ngdata.hbaseindexer.model.api.IndexerNotFoundException;
 import com.ngdata.hbaseindexer.model.api.WriteableIndexerModel;
-import com.ngdata.hbaseindexer.morphline.MorphlineResultToSolrMapper;
 import com.ngdata.hbaseindexer.util.net.NetUtils;
-import com.ngdata.hbaseindexer.util.solr.SolrTestingUtility;
 import com.ngdata.sep.impl.SepTestUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
@@ -85,7 +83,7 @@ public class IndexerIT {
     private static boolean firstTest = true;
     private static Configuration conf;
     private static HBaseTestingUtility hbaseTestUtil;
-    private static SolrTestingUtility solrTestingUtility;
+    //private static SolrTestingUtility solrTestingUtility;
     private static CloudSolrClient collection1;
     private static CloudSolrClient collection2;
     private static Connection connection;
@@ -125,19 +123,19 @@ public class IndexerIT {
 
         conf.set("hbaseindexer.zookeeper.connectstring", "localhost:" + zkClientPort);
 
-        solrTestingUtility = new SolrTestingUtility(zkClientPort, NetUtils.getFreePort());
-        solrTestingUtility.start();
-        solrTestingUtility.uploadConfig("config1",
-                Resources.toByteArray(Resources.getResource(IndexerIT.class, "managed-schema")),
-                Resources.toByteArray(Resources.getResource(IndexerIT.class, "solrconfig.xml")));
-        solrTestingUtility.createCollection("collection1", "config1", 1);
-        solrTestingUtility.createCollection("collection2", "config1", 1);
-
-        collection1 = new CloudSolrClient.Builder().withZkHost(solrTestingUtility.getZkConnectString()).build();
-        collection1.setDefaultCollection("collection1");
-
-        collection2 = new CloudSolrClient.Builder().withZkHost(solrTestingUtility.getZkConnectString()).build();
-        collection2.setDefaultCollection("collection2");
+//        solrTestingUtility = new SolrTestingUtility(zkClientPort, NetUtils.getFreePort());
+//        solrTestingUtility.start();
+//        solrTestingUtility.uploadConfig("config1",
+//                Resources.toByteArray(Resources.getResource(IndexerIT.class, "managed-schema")),
+//                Resources.toByteArray(Resources.getResource(IndexerIT.class, "solrconfig.xml")));
+//        solrTestingUtility.createCollection("collection1", "config1", 1);
+//        solrTestingUtility.createCollection("collection2", "config1", 1);
+//
+//        collection1 = new CloudSolrClient.Builder().withZkHost(solrTestingUtility.getZkConnectString()).build();
+//        collection1.setDefaultCollection("collection1");
+//
+//        collection2 = new CloudSolrClient.Builder().withZkHost(solrTestingUtility.getZkConnectString()).build();
+//        collection2.setDefaultCollection("collection2");
         
         connection = ConnectionFactory.createConnection(conf);
     }
@@ -152,9 +150,9 @@ public class IndexerIT {
         }
 
         //  Stop Solr first, as it depends on ZooKeeper
-        if (solrTestingUtility != null) {
-            solrTestingUtility.stop();
-        }
+//        if (solrTestingUtility != null) {
+//            solrTestingUtility.stop();
+//        }
 
         if (hbaseTestUtil != null) {
             hbaseTestUtil.shutdownMiniCluster();
@@ -221,8 +219,8 @@ public class IndexerIT {
                 .configuration(
                         Bytes.toBytes("<indexer table='table1'><field name='field1_s' value='family1:qualifier1'/></indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -259,8 +257,8 @@ public class IndexerIT {
                         Bytes.toBytes("<indexer table='regex:table\\d+'><field name='field1_s' " +
                                 "value='family1:qualifier1'/></indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -296,8 +294,8 @@ public class IndexerIT {
                 .configuration(
                         Bytes.toBytes("<indexer table='table1'><field name='field2_l' value='family1:qualifier2' type='long'/></indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -331,8 +329,8 @@ public class IndexerIT {
                 .configuration(
                         Bytes.toBytes("<indexer table='table1'><field name='field1_s' value='family1:qualifier1'/></indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -365,8 +363,8 @@ public class IndexerIT {
                         Bytes.toBytes(("<indexer table='table1'><field name='field1_s' " +
                                 "value='family1:qualifier1'/></indexer>")))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -436,8 +434,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -448,8 +446,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection2"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection2"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -497,8 +495,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>").getBytes())
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -509,8 +507,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>").getBytes())
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection2"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection2"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -550,8 +548,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
         indexerModel.addIndexer(indexerDef);
         // wait for 2 events because: first the indexer is added (= first event), then IndexerMaster
@@ -626,8 +624,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
 
         indexerModel.addIndexer(indexerDef);
@@ -692,8 +690,8 @@ public class IndexerIT {
                         "<field name='field1_s' value='family1:qualifier1'/>" +
                         "</indexer>"))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
         indexerModel.addIndexer(indexerDef);
 
@@ -853,7 +851,7 @@ public class IndexerIT {
         Table table = connection.getTable(TableName.valueOf("table1"));
 
         StringBuilder indexerConf = new StringBuilder();
-        indexerConf.append("<indexer table='table1' mapper='" + MorphlineResultToSolrMapper.class.getName() + "'>");
+//        indexerConf.append("<indexer table='table1' mapper='" + MorphlineResultToSolrMapper.class.getName() + "'>");
         indexerConf.append("  <param name='morphlineFile'" +
                 " value='../hbase-indexer-morphlines/src/test/resources/test-morphlines/extractHBaseCell.conf'/>");
         indexerConf.append("</indexer>");
@@ -889,7 +887,7 @@ public class IndexerIT {
         Table table = connection.getTable(TableName.valueOf("table1"));
 
         StringBuilder indexerConf = new StringBuilder();
-        indexerConf.append("<indexer table='table1' mapper='" + MorphlineResultToSolrMapper.class.getName() + "'>");
+//        indexerConf.append("<indexer table='table1' mapper='" + MorphlineResultToSolrMapper.class.getName() + "'>");
         indexerConf.append("  <param name='morphlineFile'" +
                 " value='../hbase-indexer-morphlines/src/test/resources/test-morphlines/extractHBaseCellWithWildcardInputFieldMix.conf'/>");
         indexerConf.append("</indexer>");
@@ -1208,8 +1206,8 @@ public class IndexerIT {
                 .name("indexer1")
                 .configuration(Bytes.toBytes(indexerConf.toString()))
                 .connectionType("solr")
-                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
-                        "solr.collection", "collection1"))
+//                .connectionParams(ImmutableMap.of("solr.zk", solrTestingUtility.getZkConnectString(),
+//                        "solr.collection", "collection1"))
                 .build();
         indexerModel.addIndexer(indexerDef);
     }

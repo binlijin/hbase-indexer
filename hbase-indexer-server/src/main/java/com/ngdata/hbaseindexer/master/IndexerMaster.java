@@ -24,8 +24,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,11 +35,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.base.Optional;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.ngdata.hbaseindexer.ConfKeys;
 import com.ngdata.hbaseindexer.SolrConnectionParams;
 import com.ngdata.hbaseindexer.conf.IndexerComponentFactory;
@@ -57,7 +50,6 @@ import com.ngdata.hbaseindexer.model.api.IndexerModelEvent;
 import com.ngdata.hbaseindexer.model.api.IndexerModelListener;
 import com.ngdata.hbaseindexer.model.api.IndexerNotFoundException;
 import com.ngdata.hbaseindexer.model.api.WriteableIndexerModel;
-import com.ngdata.hbaseindexer.util.solr.SolrConnectionParamUtil;
 import com.ngdata.hbaseindexer.util.zookeeper.LeaderElection;
 import com.ngdata.hbaseindexer.util.zookeeper.LeaderElectionCallback;
 import com.ngdata.hbaseindexer.util.zookeeper.LeaderElectionSetupException;
@@ -346,10 +338,10 @@ public class IndexerMaster {
             args.add("--zk-host");
             args.add(indexer.getConnectionParams().get(SolrConnectionParams.ZOOKEEPER));
         } else {
-            for (String shard : SolrConnectionParamUtil.getShards(indexer.getConnectionParams())) {
-                args.add("--shard-url");
-                args.add(shard);
-            }
+//            for (String shard : SolrConnectionParamUtil.getShards(indexer.getConnectionParams())) {
+//                args.add("--shard-url");
+//                args.add(shard);
+//            }
         }
         args.add("--hbase-indexer-zk");
         args.add(zkConnectString);

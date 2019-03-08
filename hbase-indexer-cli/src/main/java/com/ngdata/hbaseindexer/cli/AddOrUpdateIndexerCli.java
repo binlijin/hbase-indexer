@@ -39,7 +39,6 @@ import com.ngdata.hbaseindexer.conf.IndexerConfException;
 import com.ngdata.hbaseindexer.model.api.IndexerDefinition;
 import com.ngdata.hbaseindexer.model.api.IndexerDefinitionBuilder;
 import com.ngdata.hbaseindexer.util.IndexerNameValidator;
-import com.ngdata.hbaseindexer.util.solr.SolrConnectionParamUtil;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -320,9 +319,9 @@ public abstract class AddOrUpdateIndexerCli extends BaseIndexCli {
             // handle classic params
 
             // Check that there is at least one shard, and that the shards are valid
-            if (SolrConnectionParamUtil.getShards(connectionParams).size() == 0) {
-                throw new CliException("ERROR: You need at least one shard when using solr classic");
-            }
+//            if (SolrConnectionParamUtil.getShards(connectionParams).size() == 0) {
+//                throw new CliException("ERROR: You need at least one shard when using solr classic");
+//            }
 
         } else {
             throw new CliException("ERROR: solr.mode should be 'cloud' or 'classic'. Invalid value: " +

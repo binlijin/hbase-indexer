@@ -73,8 +73,8 @@ public abstract class Indexer {
     /**
      * Instantiate an indexer based on the given {@link IndexerConf}.
      */
-    public static Indexer createIndexer(String indexerName, IndexerConf conf, String tableName,
-                                        Connection tablePool, Sharder sharder) {
+    public static Indexer createIndexer(String indexerName, IndexerConf conf, String tableName, String mapper,
+                                        Connection tablePool, Sharder sharder, String es) {
         switch (conf.getMappingType()) {
             case COLUMN:
                 return new ColumnBasedIndexer(indexerName, conf, tableName, sharder);

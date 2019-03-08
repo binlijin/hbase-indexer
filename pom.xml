@@ -19,7 +19,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <properties>
-    <version.solr>7.4.0-cdh6.1.1</version.solr>
     <version.guava>11.0.2</version.guava>
     <version.joda-time>2.9.9</version.joda-time>
     <version.slf4j>1.7.25</version.slf4j>
@@ -36,7 +35,6 @@
     <version.jersey>1.19</version.jersey>
     <version.jaxb-api>2.2.11</version.jaxb-api>
     <version.curator>2.7.1</version.curator>
-    <version.solr-security-util>7.4.0-cdh6.1.1</version.solr-security-util>
     <version.sentry-binding-hbase-indexer>2.1.0-cdh6.1.1</version.sentry-binding-hbase-indexer>
     <version.netty>4.1.17.Final</version.netty>
     <version.netty.hadoop>3.10.6.Final</version.netty.hadoop>
@@ -300,92 +298,6 @@
         <groupId>org.apache.sentry</groupId>
         <artifactId>sentry-tools</artifactId>
         <version>${version.sentry-binding-hbase-indexer}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.solr</groupId>
-        <artifactId>solr-solrj</artifactId>
-        <version>${version.solr}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.solr</groupId>
-        <artifactId>solr-test-framework</artifactId>
-        <version>${version.solr}</version>
-        <scope>test</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.solr</groupId>
-        <artifactId>solr-core</artifactId>
-        <version>${version.solr}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.solr</groupId>
-        <artifactId>solr-cell</artifactId>
-        <version>${version.solr}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <!-- used by ExtractingDocumentLoader but we never call it -->
-          </exclusion>
-          <exclusion>
-            <groupId>com.ibm.icu</groupId>
-            <artifactId>icu4j</artifactId>
-            <!-- nothing in solr-cell is using this -->
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.solr</groupId>
-        <artifactId>solr-security-util</artifactId>
-        <version>${version.solr-security-util}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-common</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-core</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.zookeeper</groupId>
