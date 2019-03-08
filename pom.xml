@@ -31,7 +31,6 @@
     <version.jetty>9.3.20.v20170531</version.jetty>
     <version.httpclient>4.5.3</version.httpclient>
     <version.httpcore>4.4.6</version.httpcore>
-    <version.kite>1.0.0-cdh6.1.1</version.kite>
     <version.jersey>1.19</version.jersey>
     <version.jaxb-api>2.2.11</version.jaxb-api>
     <version.curator>2.7.1</version.curator>
@@ -81,7 +80,6 @@
     <module>hbase-indexer-cli</module>
     <module>hbase-indexer-all</module>
     <module>hbase-indexer-engine</module>
-    <module>hbase-indexer-morphlines</module>
     <module>hbase-indexer-demo</module>
     <module>hbase-sep</module>
     <module>hbase-indexer-dist</module>
@@ -97,11 +95,6 @@
       <dependency>
         <groupId>com.ngdata</groupId>
         <artifactId>hbase-indexer-engine</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.ngdata</groupId>
-        <artifactId>hbase-indexer-morphlines</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -143,12 +136,6 @@
         <groupId>com.ngdata</groupId>
         <artifactId>hbase-sep-tools</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.kitesdk</groupId>
-        <artifactId>kite-morphlines-all-except-solrcell</artifactId>
-        <version>${version.kite}</version>
-        <type>pom</type>
       </dependency>
       <!-- CDH BUILD: add sentry to dependency -->
       <dependency>

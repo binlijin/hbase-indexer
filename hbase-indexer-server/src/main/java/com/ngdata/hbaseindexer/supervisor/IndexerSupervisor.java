@@ -60,7 +60,6 @@ import org.apache.hadoop.hbase.client.Connection;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.zookeeper.KeeperException;
 
 /**
@@ -169,8 +168,6 @@ public class IndexerSupervisor {
 
     private void startIndexer(IndexerDefinition indexerDef) {
         IndexerHandle handle = null;
-        SolrClient solr = null;
-
 
         String indexerProcessId = null;
         try {
@@ -209,7 +206,7 @@ public class IndexerSupervisor {
                     zk, hbaseConf, null, 
                     TableNamePredicates.getTableNamePredicate(indexerConf.getTable(), indexerConf.tableNameIsRegex()));
 
-            handle = new IndexerHandle(indexerDef, indexer, sepConsumer, solr, connectionManager);
+            handle = new IndexerHandle(indexerDef, indexer, sepConsumer, null, connectionManager);
             handle.start();
 
             indexers.put(indexerDef.getName(), handle);
@@ -244,7 +241,6 @@ public class IndexerSupervisor {
                 }
             } else {
                 // Might be the handle was not yet created, but the solr connection was
-                Closer.close(solr);
             }
         }
     }
@@ -325,15 +321,13 @@ public class IndexerSupervisor {
         private final IndexerDefinition indexerDef;
         private final Indexer indexer;
         private final SepConsumer sepConsumer;
-        private final SolrClient solrServer;
         private final PoolingClientConnectionManager connectionManager;
 
         public IndexerHandle(IndexerDefinition indexerDef, Indexer indexer, SepConsumer sepEventSlave,
-                             SolrClient solrServer, PoolingClientConnectionManager connectionManager) {
+                             String solrServer, PoolingClientConnectionManager connectionManager) {
             this.indexerDef = indexerDef;
             this.indexer = indexer;
             this.sepConsumer = sepEventSlave;
-            this.solrServer = solrServer;
             this.connectionManager = connectionManager;
         }
 
@@ -343,7 +337,6 @@ public class IndexerSupervisor {
 
         public void stop() throws InterruptedException {
             Closer.close(sepConsumer);
-            Closer.close(solrServer);
             Closer.close(indexer);
             Closer.close(connectionManager);
         }
