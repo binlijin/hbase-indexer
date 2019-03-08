@@ -37,9 +37,6 @@ import com.google.common.collect.Maps;
 import com.ngdata.hbaseindexer.conf.FieldDefinition.ValueSource;
 import com.ngdata.hbaseindexer.conf.IndexerConf.MappingType;
 import com.ngdata.hbaseindexer.conf.IndexerConf.RowReadMode;
-import com.ngdata.hbaseindexer.indexer.ResultToSolrMapperFactory;
-import com.ngdata.hbaseindexer.parse.DefaultResultToSolrMapper;
-import com.ngdata.hbaseindexer.parse.ResultToSolrMapper;
 import com.ngdata.hbaseindexer.uniquekey.UniqueKeyFormatter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -65,11 +62,6 @@ public class DefaultIndexerComponentFactory implements IndexerComponentFactory {
         return indexerConf;
     }
 
-    @Override
-    public ResultToSolrMapper createMapper(String indexerName) throws IndexerConfException {
-        return ResultToSolrMapperFactory.createResultToSolrMapper(indexerName, indexerConf);
-    }
-
     public void validate(InputStream is) throws IndexerConfException {
         Document document = parse(is);
         validate(document);
@@ -90,12 +82,6 @@ public class DefaultIndexerComponentFactory implements IndexerComponentFactory {
         builder.columnFamilyField(getAttribute(indexEl, "column-family-field", false));
         builder.tableNameField(getAttribute(indexEl, "table-name-field", false));
         builder.globalParams(buildParams(indexEl));
-        
-        String mapperClassName = getAttribute(indexEl, "mapper", false);
-        if (mapperClassName == null) {
-            mapperClassName = DefaultResultToSolrMapper.class.getName();
-        }
-        builder.mapperClass(loadClass(mapperClassName, ResultToSolrMapper.class));
 
         String uniqueKeyFormatterName = getAttribute(indexEl, "unique-key-formatter", false);
         if (uniqueKeyFormatterName != null) {

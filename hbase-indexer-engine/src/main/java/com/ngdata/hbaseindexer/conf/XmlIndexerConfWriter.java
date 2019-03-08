@@ -68,7 +68,6 @@ public class XmlIndexerConfWriter {
         Map<String, String> params = conf.getGlobalParams();
         addParams(params, indexerEl);
 
-        if (conf.getMapperClass() != null) indexerEl.setAttribute("mapper", conf.getMapperClass().getName());
         if (conf.getUniqueKeyFormatterClass() != null) indexerEl.setAttribute("unique-key-formatter",
                 conf.getUniqueKeyFormatterClass().getName());
 

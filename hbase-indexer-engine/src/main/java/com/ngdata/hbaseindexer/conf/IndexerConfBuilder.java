@@ -21,7 +21,6 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ngdata.hbaseindexer.conf.FieldDefinition.ValueSource;
-import com.ngdata.hbaseindexer.parse.ResultToSolrMapper;
 import com.ngdata.hbaseindexer.uniquekey.UniqueKeyFormatter;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -35,7 +34,6 @@ public class IndexerConfBuilder {
     private String rowField;
     private String columnFamilyField;
     private String tableNameField;
-    private Class<? extends ResultToSolrMapper> mapperClass;
     private Class<? extends UniqueKeyFormatter> uniqueKeyFormatterClass;
     private IndexerConf.RowReadMode rowReadMode = IndexerConf.RowReadMode.DYNAMIC;
     private IndexerConf.MappingType mappingType = IndexerConf.MappingType.ROW;
@@ -61,7 +59,6 @@ public class IndexerConfBuilder {
         this.rowField = indexerConf.getRowField();
         this.columnFamilyField = indexerConf.getColumnFamilyField();
         this.tableNameField = indexerConf.getTableNameField();
-        this.mapperClass = indexerConf.getMapperClass();
         this.uniqueKeyFormatterClass = indexerConf.getUniqueKeyFormatterClass();
         this.rowReadMode = indexerConf.getRowReadMode();
         this.mappingType = indexerConf.getMappingType();
@@ -104,11 +101,6 @@ public class IndexerConfBuilder {
         this.tableNameField = tableNameField;
         return this;
     }
-    
-    public IndexerConfBuilder mapperClass(Class<? extends ResultToSolrMapper> mapperClass) {
-        this.mapperClass = mapperClass;
-        return this;
-    }
 
     public IndexerConfBuilder uniqueKeyFormatterClass(Class<? extends UniqueKeyFormatter> uniqueKeyFormatterClass) {
         this.uniqueKeyFormatterClass = uniqueKeyFormatterClass;
@@ -145,7 +137,6 @@ public class IndexerConfBuilder {
         conf.setRowField(rowField);
         conf.setColumnFamilyField(columnFamilyField);
         conf.setTableNameField(tableNameField);
-        conf.setMapperClass(mapperClass);
         conf.setUniqueKeyFormatterClass(uniqueKeyFormatterClass != null ?
                 uniqueKeyFormatterClass : IndexerConf.DEFAULT_UNIQUE_KEY_FORMATTER);
         conf.setFieldDefinitions(fieldDefinitions);
