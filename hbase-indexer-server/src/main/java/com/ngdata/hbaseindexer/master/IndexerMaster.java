@@ -57,8 +57,6 @@ import com.ngdata.hbaseindexer.model.api.IndexerModelEvent;
 import com.ngdata.hbaseindexer.model.api.IndexerModelListener;
 import com.ngdata.hbaseindexer.model.api.IndexerNotFoundException;
 import com.ngdata.hbaseindexer.model.api.WriteableIndexerModel;
-import com.ngdata.hbaseindexer.mr.HBaseMapReduceIndexerTool;
-import com.ngdata.hbaseindexer.mr.JobProcessCallback;
 import com.ngdata.hbaseindexer.util.solr.SolrConnectionParamUtil;
 import com.ngdata.hbaseindexer.util.zookeeper.LeaderElection;
 import com.ngdata.hbaseindexer.util.zookeeper.LeaderElectionCallback;
@@ -291,54 +289,7 @@ public class IndexerMaster {
 
     private void startFullIndexBuild(final String indexerName) {
         try {
-            String lock = indexerModel.lockIndexer(indexerName);
-            try {
-                // Read current situation of record and assure it is still actual
-                final IndexerDefinition indexer = indexerModel.getFreshIndexer(indexerName);
-                IndexerDefinitionBuilder updatedIndexer = new IndexerDefinitionBuilder().startFrom(indexer);
-                final String[] batchArguments = createBatchArguments(indexer);
-                if (needsBatchBuildStart(indexer)) {
-                    final ListeningExecutorService executor =
-                            MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
-                    ListenableFuture<Integer> future = executor.submit(new Callable<Integer>() {
-                        @Override
-                        public Integer call() throws Exception {
-                            HBaseMapReduceIndexerTool tool = new HBaseMapReduceIndexerTool();
-                            tool.setConf(hbaseConf);
-                            return tool.run(batchArguments, new IndexerDefinitionUpdaterJobProgressCallback(indexerName));
-                        }
-                    });
-
-                    Futures.addCallback(future, new FutureCallback<Integer>() {
-                        @Override
-                        public void onSuccess(Integer exitCode) {
-                            markBatchBuildCompleted(indexerName, exitCode == 0);
-                            executor.shutdownNow();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            log.error("batch index build failed", throwable);
-                            markBatchBuildCompleted(indexerName, false);
-                            executor.shutdownNow();
-                        }
-                    });
-
-                    BatchBuildInfo jobInfo = new BatchBuildInfo(System.currentTimeMillis(), null, null, batchArguments);
-                    updatedIndexer
-                            .activeBatchBuildInfo(jobInfo)
-                            .batchIndexingState(BatchIndexingState.BUILDING)
-                            .batchIndexCliArguments(null)
-                            .build();
-
-                    indexerModel.updateIndexerInternal(updatedIndexer.build());
-
-                    log.info("Started batch index build for index " + indexerName);
-
-                }
-            } finally {
-                indexerModel.unlockIndexer(lock);
-            }
+            throw new IOException("Unsupported.");
         } catch (Throwable t) {
             log.error("Error trying to start index build job for index " + indexerName, t);
         }
@@ -604,10 +555,8 @@ public class IndexerMaster {
                                 }
 
                                 if (needsBatchBuildStart(indexer)) {
-                                    startFullIndexBuild(indexer.getName());
-                                    for (IndexerLifecycleListener lifecycleListener : lifecycleListeners) {
-                                        lifecycleListener.onBatchBuild(indexer);
-                                    }
+                                    // TODO
+                                    throw new IOException("Unsupported.");
                                 }
                             }
                         }
@@ -622,39 +571,4 @@ public class IndexerMaster {
         }
     }
 
-    /**
-     * Updates the index definition with information about MR jobs that are involved in the batch build (tracking urls mainly).
-     */
-    private final class IndexerDefinitionUpdaterJobProgressCallback implements JobProcessCallback {
-
-        private final String indexerName;
-
-        private IndexerDefinitionUpdaterJobProgressCallback(String indexerName) {
-            this.indexerName = indexerName;
-        }
-
-        @Override
-        public void jobStarted(String jobId, String trackingUrl) {
-            try {
-                // Lock internal bypasses the index-in-delete-state check, which does not matter (and might cause
-                // failure) in our case.
-                String lock = indexerModel.lockIndexerInternal(indexerName, false);
-                try {
-                    IndexerDefinition definition = indexerModel.getFreshIndexer(indexerName);
-                    BatchBuildInfo batchBuildInfo =
-                            new BatchBuildInfo(definition.getActiveBatchBuildInfo()).withJob(jobId, trackingUrl);
-                    IndexerDefinition updatedDefinition = new IndexerDefinitionBuilder().startFrom(definition)
-                            .activeBatchBuildInfo(batchBuildInfo)
-                            .build();
-                    indexerModel.updateIndexerInternal(updatedDefinition);
-
-                    log.info("Updated indexer batch build state for indexer " + indexerName);
-                } finally {
-                    indexerModel.unlockIndexer(lock, true);
-                }
-            } catch (Exception e) {
-                log.error("failed to update indexer batch build state for indexer " + indexerName);
-            }
-        }
-    }
 }

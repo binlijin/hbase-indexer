@@ -44,10 +44,6 @@
     </dependency>
     <dependency>
       <groupId>com.ngdata</groupId>
-      <artifactId>hbase-indexer-mr</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.ngdata</groupId>
       <artifactId>hbase-indexer-morphlines</artifactId>
     </dependency>
     <dependency>

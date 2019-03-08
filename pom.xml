@@ -18,12 +18,6 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <parent>
-    <groupId>com.cloudera.cdh</groupId>
-    <artifactId>cdh-root</artifactId>
-    <version>6.1.1</version>
-  </parent>
-
   <properties>
     <version.solr>7.4.0-cdh6.1.1</version.solr>
     <version.guava>11.0.2</version.guava>
@@ -46,7 +40,10 @@
     <version.sentry-binding-hbase-indexer>2.1.0-cdh6.1.1</version.sentry-binding-hbase-indexer>
     <version.netty>4.1.17.Final</version.netty>
     <version.netty.hadoop>3.10.6.Final</version.netty.hadoop>
-        
+
+    <version.commons-io>2.6</version.commons-io>
+    <cdh.search.version>1.0.0-cdh6.1.1</cdh.search.version>
+    <version.junit>4.8.1</version.junit>
     <version.surefire.plugin>2.20</version.surefire.plugin>
     <version.failsafe.plugin>${version.surefire.plugin}</version.failsafe.plugin>
     <skip.surefire.tests>${skipTests}</skip.surefire.tests>
@@ -90,7 +87,6 @@
     <module>hbase-indexer-morphlines</module>
     <module>hbase-indexer-demo</module>
     <module>hbase-sep</module>
-    <module>hbase-indexer-mr</module>
     <module>hbase-indexer-dist</module>
   </modules>
 
@@ -502,7 +498,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>${cdh.junit.version}</version>
+        <version>${version.junit}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -951,6 +947,13 @@
     </repository>
 
     <repository>
+      <id>cdh.thirdparty.repo</id>
+      <url>https://repository.cloudera.com/content/repositories/third-party</url>
+      <name>Cloudera Third Party Repository</name>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+
+    <repository>
       <id>p2.jfrog.org</id>
       <url>http://p2.jfrog.org/libs-releases</url>
     </repository>
@@ -1018,6 +1021,7 @@
               <exclude>**/ForkedAlphaNumericComparator.java</exclude>
               <exclude>PATCH.txt</exclude>
               <exclude>*settings.xml</exclude>
+              <exclude>*.sh</exclude>
               <!-- MIT -->
             </excludes>
           </configuration>
