@@ -25,29 +25,29 @@
   </parent>
 
   <properties>
-    <version.solr>${cdh.solr.version}</version.solr>
-    <version.guava>${cdh.guava.version}</version.guava>
-    <version.joda-time>${cdh.joda-time.version}</version.joda-time>
-    <version.slf4j>${cdh.slf4j.version}</version.slf4j>
-    <version.hbase>${cdh.hbase.version}</version.hbase>
-    <version.hadoop>${cdh.hadoop.version}</version.hadoop>    
-    <version.zookeeper>${cdh.zookeeper.version}</version.zookeeper>
-    <version.jackson>${cdh.jackson.version}</version.jackson>
-    <version.jackson-mapper-asl>${cdh.jackson-mapper-asl.version}</version.jackson-mapper-asl>
-    <version.jackson-hadoop>${cdh.jackson2.version}</version.jackson-hadoop>
-    <version.jetty>${cdh.jetty9.version}</version.jetty>
-    <version.httpclient>${cdh.httpcomponents.version}</version.httpclient>
-    <version.httpcore>${cdh.httpcomponents.core.version}</version.httpcore>
-    <version.kite>${cdh.kite.version}</version.kite>
-    <version.jersey>${cdh.jersey.version}</version.jersey>
-    <version.jaxb-api>${cdh.jaxb-api.version}</version.jaxb-api>
-    <version.curator>${cdh.curator.version}</version.curator>
-    <version.solr-security-util>${cdh.solr.version}</version.solr-security-util>
-    <version.sentry-binding-hbase-indexer>${cdh.sentry.version}</version.sentry-binding-hbase-indexer>    
-    <version.netty>${cdh.io.netty-all.version}</version.netty>
-    <version.netty.hadoop>${cdh.io.netty.version}</version.netty.hadoop>
+    <version.solr>7.4.0-cdh6.1.1</version.solr>
+    <version.guava>11.0.2</version.guava>
+    <version.joda-time>2.9.9</version.joda-time>
+    <version.slf4j>1.7.25</version.slf4j>
+    <version.hbase>2.1.0-cdh6.1.1</version.hbase>
+    <version.hadoop>3.0.0-cdh6.1.1</version.hadoop>
+    <version.zookeeper>3.4.5-cdh6.1.1</version.zookeeper>
+    <version.jackson>1.9.13</version.jackson>
+    <version.jackson-mapper-asl>1.9.13-cloudera.1</version.jackson-mapper-asl>
+    <version.jackson-hadoop>2.9.5</version.jackson-hadoop>
+    <version.jetty>9.3.20.v20170531</version.jetty>
+    <version.httpclient>4.5.3</version.httpclient>
+    <version.httpcore>4.4.6</version.httpcore>
+    <version.kite>1.0.0-cdh6.1.1</version.kite>
+    <version.jersey>1.19</version.jersey>
+    <version.jaxb-api>2.2.11</version.jaxb-api>
+    <version.curator>2.7.1</version.curator>
+    <version.solr-security-util>7.4.0-cdh6.1.1</version.solr-security-util>
+    <version.sentry-binding-hbase-indexer>2.1.0-cdh6.1.1</version.sentry-binding-hbase-indexer>
+    <version.netty>4.1.17.Final</version.netty>
+    <version.netty.hadoop>3.10.6.Final</version.netty.hadoop>
         
-    <version.surefire.plugin>${cdh.surefire.version}</version.surefire.plugin>
+    <version.surefire.plugin>2.20</version.surefire.plugin>
     <version.failsafe.plugin>${version.surefire.plugin}</version.failsafe.plugin>
     <skip.surefire.tests>${skipTests}</skip.surefire.tests>
 
@@ -948,6 +948,16 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </repository>
+
+    <repository>
+      <id>p2.jfrog.org</id>
+      <url>http://p2.jfrog.org/libs-releases</url>
+    </repository>
+
+    <repository>
+      <id>nexus.axiomalaska.com</id>
+      <url>http://nexus.axiomalaska.com/nexus/content/repositories/public</url>
     </repository>
 
   </repositories>
